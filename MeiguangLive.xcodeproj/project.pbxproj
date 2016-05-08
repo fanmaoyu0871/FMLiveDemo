@@ -1,0 +1,324 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8D29307D1CDEFA6E002453A7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D29307C1CDEFA6E002453A7 /* main.m */; };
+		8D2930801CDEFA6E002453A7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D29307F1CDEFA6E002453A7 /* AppDelegate.m */; };
+		8D2930831CDEFA6E002453A7 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D2930821CDEFA6E002453A7 /* ViewController.m */; };
+		8D2930861CDEFA6E002453A7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8D2930841CDEFA6E002453A7 /* Main.storyboard */; };
+		8D2930891CDEFA6E002453A7 /* MeiguangLive.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8D2930871CDEFA6E002453A7 /* MeiguangLive.xcdatamodeld */; };
+		8D29308B1CDEFA6E002453A7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D29308A1CDEFA6E002453A7 /* Assets.xcassets */; };
+		8D29308E1CDEFA6E002453A7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8D29308C1CDEFA6E002453A7 /* LaunchScreen.storyboard */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		8D2930781CDEFA6E002453A7 /* MeiguangLive.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MeiguangLive.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D29307C1CDEFA6E002453A7 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		8D29307E1CDEFA6E002453A7 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		8D29307F1CDEFA6E002453A7 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		8D2930811CDEFA6E002453A7 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		8D2930821CDEFA6E002453A7 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		8D2930851CDEFA6E002453A7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		8D2930881CDEFA6E002453A7 /* MeiguangLive.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MeiguangLive.xcdatamodel; sourceTree = "<group>"; };
+		8D29308A1CDEFA6E002453A7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		8D29308D1CDEFA6E002453A7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		8D29308F1CDEFA6E002453A7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8D2930751CDEFA6E002453A7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		8D29306F1CDEFA6E002453A7 = {
+			isa = PBXGroup;
+			children = (
+				8D29307A1CDEFA6E002453A7 /* MeiguangLive */,
+				8D2930791CDEFA6E002453A7 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		8D2930791CDEFA6E002453A7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8D2930781CDEFA6E002453A7 /* MeiguangLive.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8D29307A1CDEFA6E002453A7 /* MeiguangLive */ = {
+			isa = PBXGroup;
+			children = (
+				8D29307E1CDEFA6E002453A7 /* AppDelegate.h */,
+				8D29307F1CDEFA6E002453A7 /* AppDelegate.m */,
+				8D2930811CDEFA6E002453A7 /* ViewController.h */,
+				8D2930821CDEFA6E002453A7 /* ViewController.m */,
+				8D2930841CDEFA6E002453A7 /* Main.storyboard */,
+				8D29308A1CDEFA6E002453A7 /* Assets.xcassets */,
+				8D29308C1CDEFA6E002453A7 /* LaunchScreen.storyboard */,
+				8D29308F1CDEFA6E002453A7 /* Info.plist */,
+				8D2930871CDEFA6E002453A7 /* MeiguangLive.xcdatamodeld */,
+				8D29307B1CDEFA6E002453A7 /* Supporting Files */,
+			);
+			path = MeiguangLive;
+			sourceTree = "<group>";
+		};
+		8D29307B1CDEFA6E002453A7 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				8D29307C1CDEFA6E002453A7 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8D2930771CDEFA6E002453A7 /* MeiguangLive */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8D2930921CDEFA6E002453A7 /* Build configuration list for PBXNativeTarget "MeiguangLive" */;
+			buildPhases = (
+				8D2930741CDEFA6E002453A7 /* Sources */,
+				8D2930751CDEFA6E002453A7 /* Frameworks */,
+				8D2930761CDEFA6E002453A7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MeiguangLive;
+			productName = MeiguangLive;
+			productReference = 8D2930781CDEFA6E002453A7 /* MeiguangLive.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8D2930701CDEFA6E002453A7 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = "范茂羽";
+				TargetAttributes = {
+					8D2930771CDEFA6E002453A7 = {
+						CreatedOnToolsVersion = 7.3;
+					};
+				};
+			};
+			buildConfigurationList = 8D2930731CDEFA6E002453A7 /* Build configuration list for PBXProject "MeiguangLive" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 8D29306F1CDEFA6E002453A7;
+			productRefGroup = 8D2930791CDEFA6E002453A7 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8D2930771CDEFA6E002453A7 /* MeiguangLive */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8D2930761CDEFA6E002453A7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D29308E1CDEFA6E002453A7 /* LaunchScreen.storyboard in Resources */,
+				8D29308B1CDEFA6E002453A7 /* Assets.xcassets in Resources */,
+				8D2930861CDEFA6E002453A7 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8D2930741CDEFA6E002453A7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D2930831CDEFA6E002453A7 /* ViewController.m in Sources */,
+				8D2930801CDEFA6E002453A7 /* AppDelegate.m in Sources */,
+				8D2930891CDEFA6E002453A7 /* MeiguangLive.xcdatamodeld in Sources */,
+				8D29307D1CDEFA6E002453A7 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		8D2930841CDEFA6E002453A7 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8D2930851CDEFA6E002453A7 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		8D29308C1CDEFA6E002453A7 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8D29308D1CDEFA6E002453A7 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		8D2930901CDEFA6E002453A7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		8D2930911CDEFA6E002453A7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		8D2930931CDEFA6E002453A7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = MeiguangLive/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.jeesea.www.MeiguangLive;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		8D2930941CDEFA6E002453A7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = MeiguangLive/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.jeesea.www.MeiguangLive;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		8D2930731CDEFA6E002453A7 /* Build configuration list for PBXProject "MeiguangLive" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8D2930901CDEFA6E002453A7 /* Debug */,
+				8D2930911CDEFA6E002453A7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8D2930921CDEFA6E002453A7 /* Build configuration list for PBXNativeTarget "MeiguangLive" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8D2930931CDEFA6E002453A7 /* Debug */,
+				8D2930941CDEFA6E002453A7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		8D2930871CDEFA6E002453A7 /* MeiguangLive.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				8D2930881CDEFA6E002453A7 /* MeiguangLive.xcdatamodel */,
+			);
+			currentVersion = 8D2930881CDEFA6E002453A7 /* MeiguangLive.xcdatamodel */;
+			path = MeiguangLive.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 8D2930701CDEFA6E002453A7 /* Project object */;
+}
