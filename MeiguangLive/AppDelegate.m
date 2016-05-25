@@ -7,8 +7,10 @@
 //
 
 #import "AppDelegate.h"
+#import "MGRecordVC.h"
 
-@interface AppDelegate ()
+
+@interface AppDelegate ()<WXApiDelegate>
 
 @end
 
@@ -17,6 +19,17 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    self.window = [[UIWindow alloc]initWithFrame:[UIScreen mainScreen].bounds];
+    self.window.backgroundColor = [UIColor whiteColor];
+    [self.window makeKeyAndVisible];
+    
+    //reg wx
+    [WXApi registerApp:WxAppID];
+    
+    MGRecordVC *recordVC = [[MGRecordVC alloc]init];
+    self.window.rootViewController = recordVC;
+    
     return YES;
 }
 
@@ -42,6 +55,33 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     // Saves changes in the application's managed object context before the application terminates.
     [self saveContext];
+}
+
+-(BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
+{
+    return [WXApi handleOpenURL:url delegate:self];
+}
+
+-(BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options
+{
+    return [WXApi handleOpenURL:url delegate:self];
+}
+
+-(void) onReq:(BaseReq*)req
+{
+    
+}
+
+-(void) onResp:(BaseResp*)resp
+{
+    if([resp isKindOfClass:[SendAuthResp class]])
+    {
+        SendAuthResp *authResp = (SendAuthResp*)resp;
+        
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"notification" object:authResp.code];
+        NSLog(@"%@", authResp.code);
+        
+    }
 }
 
 #pragma mark - Core Data stack

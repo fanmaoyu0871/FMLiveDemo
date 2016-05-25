@@ -1,0 +1,109 @@
+//
+//  MeiguangLive.pch
+//  MeiguangLive
+//
+//  Created by 范茂羽 on 16/5/8.
+//  Copyright © 2016年 范茂羽. All rights reserved.
+//
+
+#ifndef MeiguangLive_pch
+#define MeiguangLive_pch
+
+#define ScreenWidth     [UIScreen mainScreen].bounds.size.width
+#define ScreenHeight    [UIScreen mainScreen].bounds.size.height
+#define StatusBarHeight [UIApplication sharedApplication].statusBarFrame.size.height
+
+#pragma mark -----------------service address-------
+//#define ServiceURL @"http://www.ydj.com:8080/v1"
+//#define ImageServiceURL @"http://www.ydj.com:8080/upload/"
+
+//本地测试
+//#define ServiceURL @"http://192.168.33.111:8080/v1"
+//#define ImageServiceURL @"http://192.168.33.111:8080/upload/"
+
+#define ServiceURL @"http://beta.jeesea.com:8080/v1/"
+#define ImageServiceURL @"http://beta.jeesea.com:8080/upload/"
+
+#pragma mark ----------------database table name------
+#define Table_YDJUserInfo @"YDJUserInfoTable"
+#define Table_YDJGouwuche @"YDJGouwucheTable"
+#define Table_YDJSeach    @"YDJSearchTable"
+
+#pragma mark -----------------------judge device----------------
+#define IS_IPAD (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+#define IS_IPHONE (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+#define SCREEN_WIDTH ([[UIScreen mainScreen] bounds].size.width)
+#define SCREEN_HEIGHT ([[UIScreen mainScreen] bounds].size.height)
+#define SCREEN_MAX_LENGTH (MAX(SCREEN_WIDTH, SCREEN_HEIGHT))
+#define SCREEN_MIN_LENGTH (MIN(SCREEN_WIDTH, SCREEN_HEIGHT))
+#define MAX_BUFFSIZE 1024
+
+#define IS_IPHONE_4_OR_LESS (IS_IPHONE && SCREEN_MAX_LENGTH < 568.0)
+#define IS_IPHONE_5 (IS_IPHONE && SCREEN_MAX_LENGTH == 568.0)
+#define IS_IPHONE_6 (IS_IPHONE && SCREEN_MAX_LENGTH == 667.0)
+#define IS_IPHONE_6P (IS_IPHONE && SCREEN_MAX_LENGTH == 736.0)
+
+#pragma mark -----------------------method-----------------------
+#define RGBHEX(integer) [Utils RGBHEXWithRGBValue:integer]
+#define SJWEAKSELF typeof(self) __weak weakSelf = self;
+
+
+#pragma mark -------------------------color---------------------
+#define Theme_MainColor RGBHEX(0x50A971)
+#define Theme_TextMainColor RGBHEX(0x515151)
+#define Theme_BackgroudColor RGBHEX(0xF0F0F0)
+
+//"HelveticaNeue-BoldItalic",
+//"HelveticaNeue-Light",
+//"HelveticaNeue-Italic",
+//"HelveticaNeue-UltraLightItalic",
+//"HelveticaNeue-CondensedBold",
+//"HelveticaNeue-MediumItalic",
+//"HelveticaNeue-Thin",
+//"HelveticaNeue-Medium",
+//"HelveticaNeue-Thin_Italic",
+//"HelveticaNeue-LightItalic",
+//"HelveticaNeue-UltraLight",
+//"HelveticaNeue-Bold",
+//"HelveticaNeue-CondensedBlack"
+
+#define Theme_MainFont @"HelveticaNeue"
+
+#define Theme_Scale [UIScreen mainScreen].scale
+
+#pragma mark ---------------------APPKeys---------------------
+#define WxAppID @"wx23e36bf4c3f912f5"
+
+#pragma mark ------------global notification name-----------
+
+
+#ifdef __OBJC__
+
+#import "UIView+Tools.h"
+#import "Utils.h"
+#import "NSString+Tools.h"
+#import "UILabel+Tools.h"
+#import <MBProgressHUD/MBProgressHUD.h>
+#import "YDJProgressHUD.h"
+#import <SDWebImage/UIImageView+WebCache.h>
+#import <SDWebImage/UIButton+WebCache.h>
+#import <LCActionSheet/LCActionSheet.h>
+#import <AVFoundation/AVFoundation.h>
+#import "VideoToolboxPlus.h"
+#import "WXApi.h"
+#import "WechatAuthSDK.h"
+#import "WXApiObject.h"
+#import <AFNetworking/AFNetworking.h>
+#import "define.h"
+#import "MGSocketManager.h"
+#endif
+
+#if DEBUG
+#define NSLog(FORMAT, ...) fprintf(stderr,"\nfunction:%s line:%d content:%s\n", __FUNCTION__, __LINE__, [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);
+#else
+#define NSLog(FORMAT, ...)
+#endif
+
+
+
+#endif /* MeiguangLive_pch */
