@@ -10,8 +10,6 @@
 #import "MGPacketTools.h"
 #import "rtmp.h"
 
-static FILE *file = NULL;
-
 @interface MGCompressH264Object ()
 {
     BOOL isNotFirst; //这个用来判断pps／sps只用传一次
@@ -33,16 +31,6 @@ static FILE *file = NULL;
     // Check if we have got a key frame first
     bool keyframe = !CFDictionaryContainsKey( (CFArrayGetValueAtIndex(CMSampleBufferGetSampleAttachmentsArray(sampleBuffer, true), 0)), kCMSampleAttachmentKey_NotSync);
     
-    // test write to file
-//    const char *videofile = [[NSString stringWithFormat:@"%@/tmp/video.txt", NSHomeDirectory()] UTF8String];
-//    const char *ppsfile = [[NSString stringWithFormat:@"%@/tmp/spspps.txt", NSHomeDirectory()] UTF8String];
-//    file = fopen(videofile, "a+");
-//    FILE *ppsFile = fopen(ppsfile, "a+");
-//    if(file == NULL)
-//    {
-//        NSLog(@"open failed");
-//    }
-    
     if (keyframe && !isNotFirst)
     {
         //拿到sps,pps
@@ -52,8 +40,7 @@ static FILE *file = NULL;
         size_t sparameterSetSize, sparameterSetCount;
         const uint8_t *sparameterSet;
         OSStatus statusCode = CMVideoFormatDescriptionGetH264ParameterSetAtIndex(format, 0, &sparameterSet, &sparameterSetSize, &sparameterSetCount, 0);
-//        fwrite("\x00\x00\x00\x01", 1, 4, file);
-//        fwrite(sparameterSet, 1, sparameterSetSize, file);
+
         if (statusCode == noErr)
         {
             // Found sps and now check for pps
@@ -63,8 +50,6 @@ static FILE *file = NULL;
             
             if (statusCode == noErr)
             {
-//                fwrite("\x00\x00\x00\x01", 1, 4, file);
-//                fwrite(pparameterSet, 1, pparameterSetSize, file);
                 // Found pps
                 int      bufSize = 0;
                 uint8_t *headerBuf;
@@ -72,26 +57,19 @@ static FILE *file = NULL;
                 memset((uint8_t*)headerBuf, 0, MAX_BUFFSIZE);
 
                 bufSize  = [MGPacketTools packRTMPVideoHeaderSpsBuf:sparameterSet spsSize:sparameterSetSize ppsBuf:pparameterSet ppsSize:pparameterSetSize outBuf:headerBuf];
-//                fwrite(headerBuf, 1, bufSize, ppsFile);
-//                fclose(ppsFile);
                 
-                //发送sps + pps
                 if([delegate respondsToSelector:@selector(gotPacket:type:timestamp:)])
                 {
+                    //发送sps + pps
                     NSData *data = [[NSData alloc]initWithBytes:headerBuf length:bufSize];
-                    NSLog(@"sps+pps length = %ld", [data length]);
                     _ppsTime = [NSDate timeIntervalSinceReferenceDate];
                     [delegate gotPacket:data type:RTMP_PACKET_TYPE_VIDEO timestamp:0];
-//                                    fwrite("\x00\x00\x00\x01", 1, 4, file);
-//                                    fwrite(headerBuf, 1, bufSize, file);
                     
                     //修改chunk size
-                    uint32_t chunkSize = MAX_BUFFSIZE;
+                    uint32_t chunkSize = 128;
                     [delegate gotPacket:[NSData dataWithBytes:&chunkSize length:4] type:RTMP_PACKET_TYPE_CHUNK_SIZE timestamp:0];
-                    
                     isNotFirst = YES;
                 }
-                
                 free(headerBuf);
             }
         }
@@ -105,6 +83,9 @@ static FILE *file = NULL;
         
         size_t bufferOffset = 0;
         static const int AVCCHeaderLength = 4;
+        
+//        uint8_t *bodyBuf = malloc(totalLength);
+//        memset(bodyBuf, 0, totalLength);
         
         while (bufferOffset < totalLength - AVCCHeaderLength) {
             
@@ -132,7 +113,7 @@ static FILE *file = NULL;
                 {
                     uint8_t ch = tmpBuf[0];
                     
-                    if( (ch & 0x1F) == 0x05 || (ch & 0x1F) == 0x06 ) // I帧
+                    if( (ch & 0x1F) == 0x05 ) // I帧
                     {
                         isKeyframe = YES;
                     }
@@ -151,19 +132,13 @@ static FILE *file = NULL;
 //                    }
                 }
                 
-                
-//                fwrite("\x00\x00\x00\x01", 1, 4, file);
-//                fwrite(tmpBuf, 1, NALUnitLength, file);
-                
                 int bodyLenth = NALUnitLength + 9/*固定的*/;
                 uint8_t *bodyBuf = (uint8_t *)malloc(bodyLenth);
                 memset((uint8_t *)bodyBuf, 0, bodyLenth);
                 [MGPacketTools packRTMPVideoBodyDataBuf:tmpBuf dataSize:NALUnitLength isKeyframe:isKeyframe outBuf:bodyBuf];
                 
-//                fwrite(bodyBuf, 1, bodyLenth, file);
-                
                 NSData *data = [[NSData alloc]initWithBytes:bodyBuf length:bodyLenth];
-                NSLog(@"data length = %ld", [data length]);
+//                NSLog(@"data length = %ld", [data length]);
                 
                 uint32_t timestamp = 0;
                 if(isVideoFirst)
@@ -175,16 +150,16 @@ static FILE *file = NULL;
                     timestamp = 0;
                     isVideoFirst = YES;
                 }
+                NSLog(@"timestamp = %d", timestamp);
                 [delegate gotPacket:data type:RTMP_PACKET_TYPE_VIDEO timestamp:timestamp];
+                NSLog(@"发送成功 time3 = %f", [NSDate timeIntervalSinceReferenceDate]);
+
                 
                 free(tmpBuf);
                 free(bodyBuf);
             }
         }
     }
-    
-//    fclose(file);
-
 }
 
 

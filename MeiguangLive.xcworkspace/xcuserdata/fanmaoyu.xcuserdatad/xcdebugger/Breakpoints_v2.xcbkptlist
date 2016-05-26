@@ -20,11 +20,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MeiguangLive/Others/CompressOrDecompressH264/MGCompressH264Object.m"
-            timestampString = "485849211.252825"
+            timestampString = "485855138.71645"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "79"
-            endingLineNumber = "79"
+            startingLineNumber = "61"
+            endingLineNumber = "61"
             landmarkName = "-compressH264:delegate:"
             landmarkType = "5">
          </BreakpointContent>
@@ -35,29 +35,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "MeiguangLive/Others/CompressOrDecompressH264/MGCompressH264Object.m"
-            timestampString = "485849211.252825"
+            filePath = "MeiguangLive/Record/MGRecordVC.m"
+            timestampString = "485860759.003827"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "135"
-            endingLineNumber = "135"
-            landmarkName = "-compressH264:delegate:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MeiguangLive/Others/CompressOrDecompressH264/MGCompressH264Object.m"
-            timestampString = "485849293.709598"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "186"
-            endingLineNumber = "186"
-            landmarkName = "-compressH264:delegate:"
+            startingLineNumber = "227"
+            endingLineNumber = "227"
+            landmarkName = "-closeBtnAction"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

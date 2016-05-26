@@ -356,6 +356,8 @@ withCompletion:(WriteCompleteHandler)completion {
   }
 }
 
+
+
 - (NSUInteger)write:(NSData *)data type:(uint8_t)type timestamp:(uint32_t)timestamp {
   @synchronized (self) {
     int sent = -1;

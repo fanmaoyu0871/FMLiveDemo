@@ -115,13 +115,15 @@
         NSLog(@"init coder failed!");
         return;
     }
-    [_compressionSession setDelegate:self queue:NULL];
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    
+    [_compressionSession setDelegate:self queue:queue];
     
     // Set the properties
-//    [_compressionSession setValue:[NSNumber numberWithInt:ScreenWidth*ScreenHeight*7.5] forProperty:AVVideoAverageBitRateKey error:nil];
-//    [_compressionSession setValue:[NSNumber numberWithInt:100] forProperty:AVVideoMaxKeyFrameIntervalKey error:nil];
+    [_compressionSession setValue:[NSNumber numberWithInt:ScreenWidth * ScreenHeight*7.5] forProperty:AVVideoAverageBitRateKey error:nil];
+    [_compressionSession setValue:[NSNumber numberWithInt:30] forProperty:AVVideoMaxKeyFrameIntervalKey error:nil];
     [_compressionSession setValue:AVVideoProfileLevelH264BaselineAutoLevel forProperty:AVVideoProfileLevelKey error:nil];
-//    [_compressionSession setValue:AVVideoProfileLevelH264HighAutoLevel forProperty:AVVideoProfileLevelKey error:nil];
+//    [_compressionSession setValue:[NSNumber numberWithInt:30] forProperty:AVVideoExpectedSourceFrameRateKey error:nil];
     [_compressionSession setValue:[NSNumber numberWithBool:YES] forProperty:(__bridge NSString *)kVTCompressionPropertyKey_RealTime error:nil];
 //    [_compressionSession setValue:[NSNumber numberWithBool:NO] forProperty:(__bridge NSString *)kVTCompressionPropertyKey_AllowFrameReordering error:nil];
 //    [_compressionSession setValue:[NSNumber numberWithInt:240] forProperty:(__bridge NSString *)kVTCompressionPropertyKey_MaxKeyFrameInterval error:nil];
@@ -134,6 +136,7 @@
 #pragma mark - VTPCompressionSessionDelegate
 - (void)videoCompressionSession:(VTPCompressionSession *)compressionSession didEncodeSampleBuffer:(CMSampleBufferRef)sampleBuffer
 {
+    NSLog(@"编码成功 time2 = %f", [NSDate timeIntervalSinceReferenceDate]);
     //转换h264流
    [_compressH264Obj compressH264:sampleBuffer delegate:self];
 }
@@ -158,20 +161,14 @@
     //    free(ph);
     //    free(buffer);
     
-    //    dispatch_async(dispatch_get_main_queue(), ^{
     
-    NSUInteger chunkSize = 1024;
-    NSUInteger offset = 0;
-    
-
-    NSUInteger thisChunkSize = length - offset > chunkSize ? chunkSize : length - offset;
     NSData* chunk = [NSData dataWithBytesNoCopy:(char *)[data bytes] length:[data length]
                                    freeWhenDone:NO];
-    offset += thisChunkSize;
-    
     // Write new chunk to rtmp server
-    NSLog(@"send length = %ld", [_rtmp write:chunk type:type timestamp:timestamp]);
+//    dispatch_async(dispatch_get_main_queue(), ^{
     
+        [_rtmp write:chunk type:type timestamp:timestamp];
+//    });
 }
 
 
@@ -204,7 +201,6 @@
 #pragma mark - 添加视频预览层
 - (void)addPreviewLayer
 {
-    
     [self.view layoutIfNeeded];
     
     // 通过会话 (AVCaptureSession) 创建预览层
@@ -217,7 +213,18 @@
     
     // 显示在视图表面的图层
     [self.view.layer addSublayer:_captureVideoPreviewLayer];
+    
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeSystem];
+    [btn setTitle:@"close" forState:UIControlStateNormal];
+    [btn addTarget:self action:@selector(closeBtnAction) forControlEvents:UIControlEventTouchUpInside];
+    btn.frame = CGRectMake(100, 100, 100, 100);
+    [self.view addSubview:btn];
 
+}
+
+-(void)closeBtnAction
+{
+    [_rtmp close];
 }
 
 
@@ -288,9 +295,9 @@
          AVCaptureVideoOrientationLandscapeLeft      = 4,
          } NS_AVAILABLE(10_7, 4_0) __TVOS_PROHIBITED;
          */
-        //        if ([captureConnection isVideoOrientationSupported]) {
-        //            [captureConnection setVideoOrientation:AVCaptureVideoOrientationPortrait];
-        //        }
+        if ([captureConnection isVideoOrientationSupported]) {
+                    [captureConnection setVideoOrientation:AVCaptureVideoOrientationPortrait];
+                }
         
         // 视频稳定设置
         if ([captureConnection isVideoStabilizationSupported]) {
@@ -349,6 +356,7 @@
     //视频编码
     if(captureOutput == _videoOutput)
     {
+        NSLog(@"time1 = %f", [NSDate timeIntervalSinceReferenceDate]);
         [_compressionSession encodeSampleBuffer:sampleBuffer forceKeyframe:NO];
         
     }
