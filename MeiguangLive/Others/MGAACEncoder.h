@@ -8,7 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
+@protocol MGAACEncoderDelegate <NSObject>
+
+-(void)didFinishedAACEncoder:(uint8_t*)aacBuf aacSize:(size_t)aacSize;
+
+@end
+
 @interface MGAACEncoder : NSObject
+
+-(instancetype)initWithDelegate:(id<MGAACEncoderDelegate>)delegate;
 
 -(BOOL)encoderAAC:(CMSampleBufferRef)sampleBuffer aacData:(char*)aacData aacLen:(int*)aacLen;
 

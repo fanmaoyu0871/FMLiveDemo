@@ -14,15 +14,6 @@
 #define StatusBarHeight [UIApplication sharedApplication].statusBarFrame.size.height
 
 #pragma mark -----------------service address-------
-//#define ServiceURL @"http://www.ydj.com:8080/v1"
-//#define ImageServiceURL @"http://www.ydj.com:8080/upload/"
-
-//本地测试
-//#define ServiceURL @"http://192.168.33.111:8080/v1"
-//#define ImageServiceURL @"http://192.168.33.111:8080/upload/"
-
-#define ServiceURL @"http://beta.jeesea.com:8080/v1/"
-#define ImageServiceURL @"http://beta.jeesea.com:8080/upload/"
 
 #pragma mark ----------------database table name------
 #define Table_YDJUserInfo @"YDJUserInfoTable"
@@ -75,6 +66,9 @@
 #define WxAppID @"wx23e36bf4c3f912f5"
 
 #pragma mark ------------global notification name-----------
+
+#pragma mark ------------   URL ----------------
+#define LiveUrl @"rtmp://xx"
 
 
 #ifdef __OBJC__

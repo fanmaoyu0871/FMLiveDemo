@@ -10,7 +10,7 @@
 
 @protocol MGCompressH264ObjectDelegate <NSObject>
 
--(void)gotPacket:(NSData*)data type:(uint8_t)type timestamp:(uint32_t)timestamp;
+-(void)transH264:(NSData*)data type:(uint8_t)type timestamp:(NSTimeInterval)timestamp;
 
 @end
 

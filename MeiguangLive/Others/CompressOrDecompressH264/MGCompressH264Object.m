@@ -13,7 +13,7 @@
 @interface MGCompressH264Object ()
 {
     BOOL isNotFirst; //这个用来判断pps／sps只用传一次
-    uint32_t _ppsTime;
+    NSTimeInterval _ppsTime;
     BOOL isVideoFirst;
 }
 @end
@@ -58,17 +58,17 @@
 
                 bufSize  = [MGPacketTools packRTMPVideoHeaderSpsBuf:sparameterSet spsSize:sparameterSetSize ppsBuf:pparameterSet ppsSize:pparameterSetSize outBuf:headerBuf];
                 
-                if([delegate respondsToSelector:@selector(gotPacket:type:timestamp:)])
+                if([delegate respondsToSelector:@selector(transH264:type:timestamp:)])
                 {
                     //发送sps + pps
                     NSData *data = [[NSData alloc]initWithBytes:headerBuf length:bufSize];
                     _ppsTime = [NSDate timeIntervalSinceReferenceDate];
-                    [delegate gotPacket:data type:RTMP_PACKET_TYPE_VIDEO timestamp:0];
+                    [delegate transH264:data type:RTMP_PACKET_TYPE_VIDEO timestamp:0];
                     
                     //修改chunk size
-                    uint32_t chunkSize = 128;
-                    [delegate gotPacket:[NSData dataWithBytes:&chunkSize length:4] type:RTMP_PACKET_TYPE_CHUNK_SIZE timestamp:0];
-                    isNotFirst = YES;
+//                    uint32_t chunkSize = 1024;
+//                    [delegate transH264:[NSData dataWithBytes:&chunkSize length:4] type:RTMP_PACKET_TYPE_CHUNK_SIZE timestamp:0];
+//                    isNotFirst = YES;
                 }
                 free(headerBuf);
             }
@@ -84,9 +84,6 @@
         size_t bufferOffset = 0;
         static const int AVCCHeaderLength = 4;
         
-//        uint8_t *bodyBuf = malloc(totalLength);
-//        memset(bodyBuf, 0, totalLength);
-        
         while (bufferOffset < totalLength - AVCCHeaderLength) {
             
             //先读4个字节长度
@@ -99,7 +96,7 @@
             NALUnitLength = CFSwapInt32BigToHost(NALUnitLength);
             
             //视频数据封包
-            if([delegate respondsToSelector:@selector(gotPacket:type:timestamp:)])
+            if([delegate respondsToSelector:@selector(transH264:type:timestamp:)])
             {
                 //读数据到tmpBuf
                 char *tmpBuf = (char *)malloc(NALUnitLength);
@@ -113,7 +110,7 @@
                 {
                     uint8_t ch = tmpBuf[0];
                     
-                    if( (ch & 0x1F) == 0x05 ) // I帧
+                    if( (ch & 0x1F) == 0x05 || (ch & 0x1F) == 0x06) // I帧
                     {
                         isKeyframe = YES;
                     }
@@ -138,9 +135,8 @@
                 [MGPacketTools packRTMPVideoBodyDataBuf:tmpBuf dataSize:NALUnitLength isKeyframe:isKeyframe outBuf:bodyBuf];
                 
                 NSData *data = [[NSData alloc]initWithBytes:bodyBuf length:bodyLenth];
-//                NSLog(@"data length = %ld", [data length]);
                 
-                uint32_t timestamp = 0;
+                NSTimeInterval timestamp = 0;
                 if(isVideoFirst)
                 {
                     timestamp = [NSDate timeIntervalSinceReferenceDate]-_ppsTime;
@@ -150,9 +146,7 @@
                     timestamp = 0;
                     isVideoFirst = YES;
                 }
-                NSLog(@"timestamp = %d", timestamp);
-                [delegate gotPacket:data type:RTMP_PACKET_TYPE_VIDEO timestamp:timestamp];
-                NSLog(@"发送成功 time3 = %f", [NSDate timeIntervalSinceReferenceDate]);
+                [delegate transH264:data type:RTMP_PACKET_TYPE_VIDEO timestamp:timestamp];
 
                 
                 free(tmpBuf);

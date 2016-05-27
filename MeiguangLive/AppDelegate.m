@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "MGRecordVC.h"
+#import "MGPlayerVC.h"
 
 
 @interface AppDelegate ()<WXApiDelegate>
@@ -27,8 +28,13 @@
     //reg wx
     [WXApi registerApp:WxAppID];
     
+    //record vc
     MGRecordVC *recordVC = [[MGRecordVC alloc]init];
     self.window.rootViewController = recordVC;
+    
+    //player vc
+//    MGPlayerVC *playerVC = [[MGPlayerVC alloc]init];
+//    self.window.rootViewController = playerVC;
     
     return YES;
 }

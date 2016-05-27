@@ -16,4 +16,10 @@
 #pragma mark - 封装rtmp 视频体
 +(void)packRTMPVideoBodyDataBuf:(const char*)dataBuf dataSize:(size_t)dataSize isKeyframe:(BOOL)isKeyframe outBuf:(uint8_t*)outBuf;
 
+#pragma mark - 封装rtmp 音频头
++(int)packRTMPAACHeader:(uint8_t*)outBuf;
+
+#pragma mark - 封装rtmp 音频体
++(int)packRTMPAACBody:(uint8_t*)dataBuf dataSize:(size_t)dataSize outBuf:(uint8_t*)outBuf;
+
 @end

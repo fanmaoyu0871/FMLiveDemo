@@ -80,7 +80,59 @@
     memcpy(outBuf, szBuf, nBufLen);
     
     memcpy(outBuf+nBufLen, dataBuf, (int)dataSize);
+}
+
++(int)packRTMPAACHeader:(uint8_t*)outBuf
+{
+    int nBufIndex = 0;
     
+    // 8bit 22khz	µÕÀƒŒª:1001
+    //	szBuf[nBufIndex++] = (char)0xA9;
+    
+    // 8bit 44khz	µÕÀƒŒª:1101
+    //	szBuf[nBufIndex++] = 0xAD;
+    
+    // 16bit 22khz	µÕÀƒŒª:1011
+    //	szBuf[nBufIndex++] = 0xAB;
+    
+    // 16bit 44khz	µÕÀƒŒª:1111
+    outBuf[nBufIndex++] = 0xAF;
+    
+    outBuf[nBufIndex++] = 0x00;				// AAC sequence header
+    
+    // AudioSpecificConfig.
+    // 22khz	µÕ»˝Œª:011,
+    // 	szBuf[nBufIndex++] = 0x13;
+    //  szBuf[nBufIndex++] = (char)0x90;	// ∏ﬂ“ªŒª:1	Ω”◊≈ÀƒŒª:0010	µÕ»˝Œª:000
+    
+    // 	// 44khz	µÕ»˝Œª:010,
+    outBuf[nBufIndex++] = 0x12;
+    outBuf[nBufIndex++] = (char)0x10;		// ∏ﬂ“ªŒª:0	Ω”◊≈ÀƒŒª:0010	µÕ»˝Œª:000
+    
+    return nBufIndex;
+}
+
++(int)packRTMPAACBody:(uint8_t*)dataBuf dataSize:(size_t)dataSize outBuf:(uint8_t*)outBuf
+{
+    int nBufIndex = 0;
+    
+    // 8bit 22khz	µÕÀƒŒª:1001
+    //	szBuf[nBufIndex++] = (char)0xA9;
+    
+    // 8bit 44khz	µÕÀƒŒª:1101
+    //	szBuf[nBufIndex++] = 0xAD;
+    
+    // 16bit 22khz	µÕÀƒŒª:1011
+    //	szBuf[nBufIndex++] = 0xAB;
+    
+    // 16bit 44khz	µÕÀƒŒª:1111
+    outBuf[nBufIndex++] = 0xAF;
+    
+    outBuf[nBufIndex++] = 0x01;				// AAC raw
+    
+    memcpy(outBuf + nBufIndex, dataBuf, dataSize);
+    
+    return nBufIndex + dataSize;
 }
 
 @end

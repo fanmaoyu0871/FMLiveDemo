@@ -9,10 +9,11 @@
 #import "MGRecordVC.h"
 #import "MGCompressH264Object.h"
 #import "MGPacketTools.h"
-#import "RtmpWrapper.h"
 #import "MGAACEncoder.h"
+#import "MGRtmpTransObj.h"
+#import "rtmp.h"
 
-@interface MGRecordVC ()<AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureAudioDataOutputSampleBufferDelegate, VTPCompressionSessionDelegate, MGCompressH264ObjectDelegate>
+@interface MGRecordVC ()<AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureAudioDataOutputSampleBufferDelegate, VTPCompressionSessionDelegate, MGAACEncoderDelegate, MGCompressH264ObjectDelegate>
 {
     AVCaptureSession *_captureSession;
     AVCaptureDevice *_videoDevice;
@@ -25,16 +26,19 @@
 
     AVCaptureVideoPreviewLayer *_captureVideoPreviewLayer;
     
+    //视频编码器
     VTPCompressionSession *_compressionSession;
-    
-    MGCompressH264Object *_compressH264Obj; //转换264类
-        
-    RtmpWrapper *_rtmp; // rtmp
-    
+    //音频编码器
     MGAACEncoder *_aacEncoder;
+    //h264传输类
+    MGCompressH264Object *_compressH264Obj;
     
-    BOOL isFirstSPS;
-    BOOL isFirstPPS;
+    //记录首次时间戳
+    uint32_t _firstTime;
+    BOOL isAACFirst;
+    
+    //传输类
+    MGRtmpTransObj *_rtmpTransObj;
 }
 
 @end
@@ -44,13 +48,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    isAACFirst = YES;
     
     //配置网络(两条线:rtmp / 直播室)
-    BOOL ret = [self initRtmpChannel];
-    if(!ret)
-    {
-        NSLog(@"初始化rtmp线路失败");
-    }
+    _rtmpTransObj = [[MGRtmpTransObj alloc]initWithUrl:LiveUrl];
     
 //    [self initLiveChannel];
     
@@ -67,13 +68,6 @@
 
 }
 
-#pragma mark - 配置rtmp线路
--(BOOL)initRtmpChannel
-{
-    _rtmp = [[RtmpWrapper alloc] init];
-    BOOL ret = [_rtmp openWithURL:@"rtmp://video-center.alivecdn.com/test/cam10?vhost=ms.jeesea.com" enableWrite:YES];
-    return ret;
-}
 
 #pragma mark - 配置直播室线路
 -(void)initLiveChannel
@@ -108,6 +102,7 @@
 #pragma mark - 初始化编码器
 -(void)initCoder
 {
+    //初始化视频编码器
     NSError *error = nil;
     _compressionSession = [[VTPCompressionSession alloc]initWithWidth:ScreenWidth height:ScreenHeight codec:kCMVideoCodecType_H264 error:&error];
     if(error)
@@ -125,52 +120,59 @@
     [_compressionSession setValue:AVVideoProfileLevelH264BaselineAutoLevel forProperty:AVVideoProfileLevelKey error:nil];
 //    [_compressionSession setValue:[NSNumber numberWithInt:30] forProperty:AVVideoExpectedSourceFrameRateKey error:nil];
     [_compressionSession setValue:[NSNumber numberWithBool:YES] forProperty:(__bridge NSString *)kVTCompressionPropertyKey_RealTime error:nil];
-//    [_compressionSession setValue:[NSNumber numberWithBool:NO] forProperty:(__bridge NSString *)kVTCompressionPropertyKey_AllowFrameReordering error:nil];
-//    [_compressionSession setValue:[NSNumber numberWithInt:240] forProperty:(__bridge NSString *)kVTCompressionPropertyKey_MaxKeyFrameInterval error:nil];
-    
+
     [_compressionSession prepare];
+    
+    //初始化音频编码器
+    _aacEncoder = [[MGAACEncoder alloc]initWithDelegate:self];
     
 }
 
-//编码成功的回调
+//视频编码成功的回调
 #pragma mark - VTPCompressionSessionDelegate
 - (void)videoCompressionSession:(VTPCompressionSession *)compressionSession didEncodeSampleBuffer:(CMSampleBufferRef)sampleBuffer
 {
-    NSLog(@"编码成功 time2 = %f", [NSDate timeIntervalSinceReferenceDate]);
+    _firstTime = [NSDate timeIntervalSinceReferenceDate];
     //转换h264流
    [_compressH264Obj compressH264:sampleBuffer delegate:self];
 }
 
 #pragma mark - MGCompressH264ObjectDelegate
--(void)gotPacket:(NSData*)data type:(uint8_t)type timestamp:(uint32_t)timestamp
+-(void)transH264:(NSData*)data type:(uint8_t)type timestamp:(NSTimeInterval)timestamp
 {
-//    PackHeader *ph = (PackHeader*)malloc(sizeof(PackHeader));
-//    ph->mark = 1;
-//    ph->head_len = sizeof(PackHeader);
-//    ph->data_len = (unsigned int)data.length;
-//    ph->timestamp = 0;
-//    ph->type = PT_LIVE_VIDEO;
-//    ph->nums = 1;
-    //    ph->index = 0;
-    //    memset(ph->ratention, 0, sizeof(ph->ratention));
-    //    memset(ph->key, 0, sizeof(ph->key));
-    //
-    //    uint8_t *buffer = (uint8_t*)malloc(sizeof(PackHeader) + data.length);
-    //    memcpy(buffer, ph, sizeof(PackHeader));
-    //    memcpy(buffer+sizeof(PackHeader), data.bytes, data.length);
-    //    free(ph);
-    //    free(buffer);
-    
-    
-    NSData* chunk = [NSData dataWithBytesNoCopy:(char *)[data bytes] length:[data length]
-                                   freeWhenDone:NO];
-    // Write new chunk to rtmp server
-//    dispatch_async(dispatch_get_main_queue(), ^{
-    
-        [_rtmp write:chunk type:type timestamp:timestamp];
-//    });
+    [_rtmpTransObj SendToRTMPSrv:data type:type timestamp:timestamp];
 }
 
+//音频编码成功回调
+#pragma mark - MGAACEncoderDelegate
+-(void)didFinishedAACEncoder:(uint8_t*)aacBuf aacSize:(size_t)aacSize
+{
+    uint8_t outBuf[1024] = {0};
+    int len = 0;
+    if(isAACFirst)
+    {
+        len = [MGPacketTools packRTMPAACHeader:outBuf];
+        NSData *headerData = [[NSData alloc]initWithBytes:outBuf length:len];
+        [_rtmpTransObj SendToRTMPSrv:headerData type:RTMP_PACKET_TYPE_AUDIO timestamp:0];
+    }
+    
+    memset(outBuf, 0, sizeof(outBuf));
+    len = [MGPacketTools packRTMPAACBody:aacBuf dataSize:aacSize outBuf:outBuf];
+    NSData *bodyData = [[NSData alloc]initWithBytes:outBuf length:len];
+    uint32_t timestamp = 0;
+    if(!isAACFirst)
+    {
+        timestamp = [NSDate timeIntervalSinceReferenceDate]-_firstTime;
+    }
+    else
+    {
+        _firstTime = [NSDate timeIntervalSinceReferenceDate];
+        timestamp = 0;
+        isAACFirst = NO;
+    }
+    [_rtmpTransObj SendToRTMPSrv:bodyData type:RTMP_PACKET_TYPE_AUDIO timestamp:timestamp];
+    
+}
 
 #pragma mark - 初始化音频设备
 - (void)initAudio
@@ -196,6 +198,7 @@
     if ([_captureSession canAddOutput:_audioOutput]) {
         [_captureSession addOutput:_audioOutput];
     }
+    [_audioOutput connectionWithMediaType:AVMediaTypeAudio];
 }
 
 #pragma mark - 添加视频预览层
@@ -224,7 +227,7 @@
 
 -(void)closeBtnAction
 {
-    [_rtmp close];
+    [_rtmpTransObj stopnTrans];
 }
 
 
@@ -356,14 +359,12 @@
     //视频编码
     if(captureOutput == _videoOutput)
     {
-        NSLog(@"time1 = %f", [NSDate timeIntervalSinceReferenceDate]);
         [_compressionSession encodeSampleBuffer:sampleBuffer forceKeyframe:NO];
-        
     }
     //音频编码
     else if (captureOutput == _audioOutput)
     {
-//        char szBuf[4096];
+//        char szBuf[1024] =  {0};
 //        int  nSize = sizeof(szBuf);
 //        if([_aacEncoder encoderAAC:sampleBuffer aacData:szBuf aacLen:&nSize])
 //        {
